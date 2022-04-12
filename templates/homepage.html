@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Newest: Weighing Data Labeling</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/assets/css/main.css" />
+		<!-- include the style -->
+		<link rel="stylesheet" href="static/assets/alertifyjs/css/alertify.min.css" />
+		<!-- include a theme -->
+		<link rel="stylesheet" href="static/assets/alertifyjs/css/themes/default.min.css" />
+		<noscript><link rel="stylesheet" href="static/assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main">
+
+						<!-- Items -->
+							<div class="items" style="justify-content: center; align-items: center;">
+
+								<div class="item intro span-2">
+									<h1>Newest</h1>
+									<p>Data Labeling</p>
+								</div>
+							</div>
+
+							<div style="margin-top: 1cm;"></div>
+
+							<div style="text-align: center;">
+								<form action="" method="POST">
+									<input type='submit' style="background-color: #4CAF50;border-radius: 5px;padding: 10px 20px;font-weight:bold;" value="Load Cells Graphics" name="submit_button"/><a style="padding-right: 0.2cm;"></a>
+								</form>
+							</div>
+							
+
+						<!-- Items -->
+							<div class="items" style="padding-top: 2cm;">
+                				{% for image in imagelist %}
+								  <article class="item thumb span-3"><h2><input type='submit' style="background-color: #4CAF50;border-radius: 5px;padding: 10px 20px;font-weight:bold;" value="Normal" name="classification" onclick="labeling(0, '{{image}}')"></input><a style="padding-right: 0.2cm;"></a><input type='submit' style="background-color: #f44336;border-radius: 5px;padding: 10px 20px;font-weight:bold;" value="Anomaly" name="classification" onclick="labeling(1, '{{image}}')"></input><a style="padding-right: 0.2cm;"></a><input type='submit' style="background-color: #e7e7e7; color: black;border-radius: 5px;padding: 10px 20px;font-weight:bold;" value="Not weighing" name="classification" onclick="labeling(2, '{{image}}')"></input></h2><a href="{{ url_for('static', filename='images/' + image) }}" class="image"><img src="{{ url_for('static', filename='images/' + image) }}" alt=""></a></article>
+								{% endfor %}
+							</div>
+
+					</section>
+
+				<!-- Footer -->
+					<section id="footer">
+						<section>
+							<ul class="copyright">
+								<li>&copy; Júlio Barros & Francisco Cunha</li><li>Project: Newest | Team: Data Science</li>
+							</ul>
+						</section>
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="static/assets/js/jquery.min.js"></script>
+			<script src="static/assets/js/jquery.poptrox.min.js"></script>
+			<script src="static/assets/js/browser.min.js"></script>
+			<script src="static/assets/js/breakpoints.min.js"></script>
+			<script src="static/assets/js/util.js"></script>
+			<script src="static/assets/js/main.js"></script>
+			<script src="static/assets/alertifyjs/alertify.min.js"></script>
+
+			<script>
+				function labeling(label, image) {
+					var value_data = [];
+					value_data.push(label, image);
+					$.ajax({
+						type: 'POST',
+						url: '/weighinglabeling',
+						data: JSON.stringify(value_data),
+    					contentType: 'application/json',
+						success: function(f) {
+							alertify.success('Image Label created successfully!');
+						}
+					});
+				}
+			 </script>
+	</body>
+</html>
