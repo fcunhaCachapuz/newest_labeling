@@ -9,6 +9,15 @@ import plotly.graph_objects as go
 import plotly.express as px
 import matplotlib.pyplot as plt
 
+from PIL import Image
+from pathlib import Path
+
+import plotly
+import kaleido
+
+
+#from gevent.pywsgi import WSGIServer
+
 app = Flask(__name__)
 
 
@@ -27,10 +36,9 @@ def weighing_visualization(df: pd.DataFrame) -> List:
         A List of weighings id's.
     """
     df_ids = df.weight_id.unique()
-    #ids = len(df.weight_id.unique()
+    ids = len(df.weight_id.unique())
     count = 1
     for i in df_ids:
-        print(i)
         df_weighingtest = df.loc[df['weight_id'] == i]
         df_weighingtest = df_weighingtest.sort_values(by=['datetime'])
         fig = go.Figure()
@@ -52,6 +60,7 @@ def weighing_visualization(df: pd.DataFrame) -> List:
             )
             fig.add_trace(obj)
         count = count + 1
+        print(i)
         fig.write_image("static/images/{}.png".format(i))
     return df_ids
 
@@ -95,4 +104,8 @@ def weighinglabeling():
 
 
 if __name__ == "__main__":
+    # Debug/Development
     app.run()
+    # Production
+    #http_server = WSGIServer(('', 5000), app)
+    #http_server.serve_forever()
